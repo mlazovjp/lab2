@@ -26,6 +26,29 @@ char variableInDataSection[] = "!@#$%^&*(_+<>?=";		// Global variable with a pre
 char variableInBSS[16];
 //char bss[4];
 
+
+// reset to default value.  Useful after it has been modified
+void setDefaultValueForvariableInBSS() {
+	strcpy_s(variableInBSS, 16, "0123456789abcde");		//16 cells
+}
+
+
+// reset to default value.  Useful after it has been modified
+void setDefaultValueForptrToHeap(char *ptrToHeap) {
+
+	for (int i = 0; i < 15; i++) {
+		ptrToHeap[i] = ('A' + i);
+	}
+	ptrToHeap[15] = '\0';
+}
+
+
+// reset to default value.  Useful after it has been modified
+void setDefaultValueForvariableInDataSection() {
+	strcpy_s(variableInDataSection, 16, "!@#$%^&*(_+<>?=");		//16 cells
+}
+
+
 //******************************************************************
 // 1.) Copy 12 bytes from the BSS section of the program to the stack - Start
 //******************************************************************
@@ -58,6 +81,32 @@ void copy12BytesFromBSSToStack() {
 //******************************************************************
 
 
+
+//******************************************************************
+// 2.) Copy 13 bytes from the heap to the DATA section - Start
+//******************************************************************
+void copy13BytesFromHeapToDataSection(char *ptrToHeap) {
+	// heap: ptrToHeap
+	// data: variableInDataSection
+	printf("\n2.) Copy 13 bytes from the heap to the DATA section\n\n");
+	printf("\tBefore 'memcpy(variableInDataSection, ptrToHeap, 13);'\n");
+	printf("\t\t\tptrToHeap\t\t=\t %s\n", ptrToHeap);
+	printf("\t\t\tvariableInDataSection\t=\t %s\n\n", variableInDataSection);
+
+	memcpy(variableInDataSection, ptrToHeap, 13);
+
+	printf("\tAfter 'memcpy(variableInDataSection, ptrToHeap, 13);'\n");
+	printf("\t\t\tptrToHeap\t\t=\t %s\n", ptrToHeap);
+	printf("\t\t\tvariableInDataSection\t=\t %s\n\n", variableInDataSection);
+}
+//******************************************************************
+// 2.) Copy 13 bytes from the heap to the DATA section - End
+//******************************************************************
+
+
+
+
+
 //******************************************************************
 // 3.) Copy 14 bytes from the stack to the heap - Start
 //******************************************************************
@@ -71,8 +120,8 @@ void copy14BytesFromStackToHeap(char *ptrToHeap) {
 	// Create stuff on stack - End
 	//***************************************
 
-													// BSS: variableInBSS
-													// stack: variableOnStack
+	// BSS: variableInBSS
+	// stack: variableOnStack
 	printf("\n\n3.) Copy 14 bytes from the stack to the heap\n\n");
 	printf("\tBefore 'memcpy(ptrToHeap, variableOnStack, 14);'\n");
 	printf("\t\t\tvariableOnStack\t\t=\t %s\n", variableOnStack);
@@ -90,6 +139,28 @@ void copy14BytesFromStackToHeap(char *ptrToHeap) {
 //******************************************************************
 
 
+//******************************************************************
+// 4.) Copy 15 bytes from the DATA section to the BSS - Start
+//******************************************************************
+void copy15BytesFromDataSectionToBSS() {
+
+	printf("\n\n4.) Copy 15 bytes from the DATA section to the BSS\n\n");
+	printf("\tBefore 'memcpy(variableInBSS, variableInDataSection, 15);'\n");
+	printf("\t\t\tvariableInDataSection\t=\t %s\n", variableInDataSection);
+	printf("\t\t\tvariableInBSS\t\t=\t %s\n\n", variableInBSS);
+
+	memcpy(variableInBSS, variableInDataSection, 15);
+
+	printf("\tAfter 'memcpy(variableInBSS, variableInDataSection, 15);'\n");
+	printf("\t\t\tvariableInDataSection\t=\t %s\n", variableInDataSection);
+	printf("\t\t\tvariableInBSS\t\t=\t %s\n\n", variableInBSS);
+
+}
+//******************************************************************
+// 4.) Copy 15 bytes from the DATA section to the BSS - End
+//******************************************************************
+
+
 int main(int argc, char *argv[]) {
 
 	//***************************************
@@ -97,55 +168,51 @@ int main(int argc, char *argv[]) {
 	//***************************************
 	char *ptrToHeap;
 	ptrToHeap = (char *) malloc(16);	// heap: allocated memory
-
-	for (int i = 0; i < 15; i++) {
-		ptrToHeap[i] = ('A' + i);
-	}
-	ptrToHeap[15] = '\0';
+	setDefaultValueForptrToHeap(ptrToHeap);
 	//***************************************
 	// Create stuff on Heap - End
 	//***************************************
 
+
 	//******************************************************************
-	// 1a.) Prep variableInBSS by setting value - Start
+	// 1.) Copy 12 bytes from the BSS section of the program to the stack - Start
 	//******************************************************************
-	strcpy_s(variableInBSS, 16, "0123456789abcde");		//16 cells
+	setDefaultValueForvariableInBSS();
 	copy12BytesFromBSSToStack();					//do it!
 	//******************************************************************
-	// 1a.) Prep variableInBSS by setting value - End
+	// 1.) Copy 12 bytes from the BSS section of the program to the stack - End
 	//******************************************************************
 
 
 	//******************************************************************
 	// 2.) Copy 13 bytes from the heap to the DATA section - Start
 	//******************************************************************
-
-	// heap: ptrToHeap
-	// data: variableInDataSection
-	printf("\n2.) Copy 13 bytes from the heap to the DATA section\n\n");
-	printf("\tBefore 'memcpy(variableInDataSection, ptrToHeap, 13);'\n");
-	printf("\t\t\tptrToHeap\t\t=\t %s\n", ptrToHeap);
-	printf("\t\t\tvariableInDataSection\t=\t %s\n\n", variableInDataSection);
-
-	memcpy(variableInDataSection, ptrToHeap, 13);
-
-	printf("\tAfter 'memcpy(variableInDataSection, ptrToHeap, 13);'\n");
-	printf("\t\t\tptrToHeap\t\t=\t %s\n", ptrToHeap);
-	printf("\t\t\tvariableInDataSection\t=\t %s\n\n", variableInDataSection);
+	setDefaultValueForptrToHeap(ptrToHeap);
+	copy13BytesFromHeapToDataSection(ptrToHeap);
 	//******************************************************************
 	// 2.) Copy 13 bytes from the heap to the DATA section - End
 	//******************************************************************
 
 
-
-	//reset the ptrToHeap values to defaults
-	for (int i = 0; i < 15; i++) {
-		ptrToHeap[i] = ('A' + i);
-	}
-	ptrToHeap[15] = '\0';
+	//******************************************************************
+	// 3.) Copy 14 bytes from the stack to the heap - Start
+	//******************************************************************
+	setDefaultValueForptrToHeap(ptrToHeap);
 	copy14BytesFromStackToHeap(ptrToHeap);
+	//******************************************************************
+	// 3.) Copy 14 bytes from the stack to the heap - End
+	//******************************************************************
 
 
+	//******************************************************************
+	// 4.) Copy 15 bytes from the DATA section to the BSS - Start
+	//******************************************************************
+	setDefaultValueForvariableInDataSection();
+	setDefaultValueForvariableInBSS();
+	copy15BytesFromDataSectionToBSS();
+	//******************************************************************
+	// 4.) Copy 15 bytes from the DATA section to the BSS - End
+	//******************************************************************
 
 
 	free(ptrToHeap);		// free up memory from heap
