@@ -58,36 +58,39 @@ void copy12BytesFromBSSToStack() {
 //******************************************************************
 
 
+//******************************************************************
+// 3.) Copy 14 bytes from the stack to the heap - Start
+//******************************************************************
+void copy14BytesFromStackToHeap(char *ptrToHeap) {
+
+	//***************************************
+	// Create stuff on stack - Start
+	//***************************************
+	char variableOnStack[] = "Put me on stack";		// local function variable, is placed on stack
+	//***************************************
+	// Create stuff on stack - End
+	//***************************************
+
+													// BSS: variableInBSS
+													// stack: variableOnStack
+	printf("\n\n3.) Copy 14 bytes from the stack to the heap\n\n");
+	printf("\tBefore 'memcpy(ptrToHeap, variableOnStack, 14);'\n");
+	printf("\t\t\tvariableOnStack\t\t=\t %s\n", variableOnStack);
+	printf("\t\t\tptrToHeap\t\t=\t %s\n\n", ptrToHeap);
+
+	memcpy(ptrToHeap, variableOnStack, 14);
+
+	printf("\tAfter 'memcpy(ptrToHeap, variableOnStack, 14);'\n");
+	printf("\t\t\tvariableOnStack\t\t=\t %s\n", variableOnStack);
+	printf("\t\t\tptrToHeap\t\t=\t %s\n\n", ptrToHeap);
+
+}
+//******************************************************************
+// 3.) Copy 14 bytes from the stack to the heap - End
+//******************************************************************
+
+
 int main(int argc, char *argv[]) {
-
-	//bss[0] = 'a';	// second step required for creating .bss section
-	//bss[1] = 'b';	// second step required for creating .bss section
-	//bss[2] = 'c';	// second step required for creating .bss section
-	//bss[3] = 'd';	// second step required for creating .bss section
-
-	//bss = 'z';
-	/*
-	char charDataArray1[] = { "abcdefghijklmno" };
-	charBSS01 = charDataArray1[0];
-
-	printf("\ncharBSS01=%c\n", charBSS01);
-
-	char charDataArray2[] = { "Here I am!!" };
-
-
-
-	const char src[50] = "http://www.tutorialspoint.com";
-	char dest[50] = "";
-
-	printf("Before memcpy dest = %s\n", dest);
-	memcpy(dest, src, strlen(src) + 1);
-	printf("After memcpy dest = %s\n", dest);
-	*/
-
-	
-
-
-
 
 	//***************************************
 	// Create stuff on Heap - Start
@@ -119,7 +122,7 @@ int main(int argc, char *argv[]) {
 
 	// heap: ptrToHeap
 	// data: variableInDataSection
-	printf("2.) Copy 13 bytes from the heap to the DATA section\n\n");
+	printf("\n2.) Copy 13 bytes from the heap to the DATA section\n\n");
 	printf("\tBefore 'memcpy(variableInDataSection, ptrToHeap, 13);'\n");
 	printf("\t\t\tptrToHeap\t\t=\t %s\n", ptrToHeap);
 	printf("\t\t\tvariableInDataSection\t=\t %s\n\n", variableInDataSection);
@@ -129,17 +132,18 @@ int main(int argc, char *argv[]) {
 	printf("\tAfter 'memcpy(variableInDataSection, ptrToHeap, 13);'\n");
 	printf("\t\t\tptrToHeap\t\t=\t %s\n", ptrToHeap);
 	printf("\t\t\tvariableInDataSection\t=\t %s\n\n", variableInDataSection);
-
-
-
-
 	//******************************************************************
 	// 2.) Copy 13 bytes from the heap to the DATA section - End
 	//******************************************************************
 
 
 
-	
+	//reset the ptrToHeap values to defaults
+	for (int i = 0; i < 15; i++) {
+		ptrToHeap[i] = ('A' + i);
+	}
+	ptrToHeap[15] = '\0';
+	copy14BytesFromStackToHeap(ptrToHeap);
 
 
 
