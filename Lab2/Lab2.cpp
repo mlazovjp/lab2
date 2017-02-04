@@ -132,7 +132,6 @@ void copy14BytesFromStackToHeap(char *ptrToHeap) {
 	printf("\tAfter 'memcpy(ptrToHeap, variableOnStack, 14);'\n");
 	printf("\t\t\tvariableOnStack\t\t=\t %s\n", variableOnStack);
 	printf("\t\t\tptrToHeap\t\t=\t %s\n\n", ptrToHeap);
-
 }
 //******************************************************************
 // 3.) Copy 14 bytes from the stack to the heap - End
@@ -154,11 +153,40 @@ void copy15BytesFromDataSectionToBSS() {
 	printf("\tAfter 'memcpy(variableInBSS, variableInDataSection, 15);'\n");
 	printf("\t\t\tvariableInDataSection\t=\t %s\n", variableInDataSection);
 	printf("\t\t\tvariableInBSS\t\t=\t %s\n\n", variableInBSS);
-
 }
 //******************************************************************
 // 4.) Copy 15 bytes from the DATA section to the BSS - End
 //******************************************************************
+
+
+//******************************************************************
+// 5.) Copy 4 bytes from the text section to the BSS - Start
+//******************************************************************
+void copy4BytesFromTextSectionToBSS() {
+
+	// we are going to try to capture the location in memory of a local function
+	// and hope that will be in the .text section and the space there is executable code
+	// we will try to copy 4 bytes from that address
+
+	//const char *ptrToText = (const char *)0x0400;
+
+	// text: 0x0400
+	// BSS: variableInBSS
+	printf("\n\n5.) Copy 4 bytes from the text section to the BSS\n\n");
+	printf("\tBefore 'memcpy(variableInBSS, ptrToText, 4);'\n");
+	printf("\t\t\tptrToText\t\t=\t %s\n", ptrToText);
+	printf("\t\t\tvariableInBSS\t\t=\t %s\n\n", variableInBSS);
+
+	memcpy(variableInBSS, ptrToText, 4);
+
+	printf("\tAfter 'memcpy(variableInBSS, ptrToText, 4);'\n");
+	printf("\t\t\tptrToText\t\t=\t %s\n", ptrToText);
+	printf("\t\t\tvariableInBSS\t\t=\t %s\n\n", variableInBSS);
+}
+//******************************************************************
+// 5.) Copy 4 bytes from the text section to the BSS - End
+//******************************************************************
+
 
 
 int main(int argc, char *argv[]) {
@@ -212,6 +240,16 @@ int main(int argc, char *argv[]) {
 	copy15BytesFromDataSectionToBSS();
 	//******************************************************************
 	// 4.) Copy 15 bytes from the DATA section to the BSS - End
+	//******************************************************************
+
+
+	//******************************************************************
+	// 5.) Copy 4 bytes from the text section to the BSS - Start
+	//******************************************************************
+	setDefaultValueForvariableInBSS();
+	copy4BytesFromTextSectionToBSS();
+	//******************************************************************
+	// 5.) Copy 4 bytes from the text section to the BSS - End
 	//******************************************************************
 
 
