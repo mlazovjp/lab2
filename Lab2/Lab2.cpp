@@ -27,7 +27,7 @@ char variableInBSS[16];
 //char bss[4];
 
 //******************************************************************
-// 2.) Copy 12 bytes from the BSS section of the program to the stack - Start
+// 1.) Copy 12 bytes from the BSS section of the program to the stack - Start
 //******************************************************************
 void copy12BytesFromBSSToStack() {
 
@@ -39,26 +39,22 @@ void copy12BytesFromBSSToStack() {
 	// Create stuff on stack - End
 	//***************************************
 
+	// BSS: variableInBSS
+	// stack: variableOnStack
+	printf("\n\n1.) Copy 12 bytes from the BSS section of the program to the stack\n\n");
+	printf("\tBefore 'memcpy(variableOnStack, variableInBSS, 12);'\n");
+	printf("\t\t\tvariableInBSS\t\t=\t %s\n", variableInBSS);
+	printf("\t\t\tvariableOnStack\t\t=\t %s\n\n", variableOnStack);
 
-	
+	memcpy(variableOnStack, variableInBSS, 12);
 
-	// heap: ptrToHeap
-	// data: variableInDataSection
-	printf("2.) Copy 13 bytes from the heap to the DATA section\n\n");
-	printf("\tBefore 'memcpy(variableInDataSection, ptrToHeap, 13);'\n");
-	printf("\t\t\tptrToHeap\t\t=\t %s\n", ptrToHeap);
-	printf("\t\t\tvariableInDataSection\t=\t %s\n\n", variableInDataSection);
-
-	memcpy(variableInDataSection, ptrToHeap, 13);
-
-	printf("\tAfter 'memcpy(variableInDataSection, ptrToHeap, 13);'\n");
-	printf("\t\t\tptrToHeap\t\t=\t %s\n", ptrToHeap);
-	printf("\t\t\tvariableInDataSection\t=\t %s\n\n", variableInDataSection);
-	
+	printf("\tAfter 'memcpy(variableOnStack, variableInBSS, 12);'\n");
+	printf("\t\t\tvariableInBSS\t\t=\t %s\n", variableInBSS);
+	printf("\t\t\tvariableOnStack\t\t=\t %s\n\n", variableOnStack);
 
 }
 //******************************************************************
-// 2.) Copy 12 bytes from the BSS section of the program to the stack - End
+// 1.) Copy 12 bytes from the BSS section of the program to the stack - End
 //******************************************************************
 
 
@@ -107,6 +103,14 @@ int main(int argc, char *argv[]) {
 	// Create stuff on Heap - End
 	//***************************************
 
+	//******************************************************************
+	// 1a.) Prep variableInBSS by setting value - Start
+	//******************************************************************
+	strcpy_s(variableInBSS, 16, "0123456789abcde");		//16 cells
+	copy12BytesFromBSSToStack();					//do it!
+	//******************************************************************
+	// 1a.) Prep variableInBSS by setting value - End
+	//******************************************************************
 
 
 	//******************************************************************
