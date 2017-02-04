@@ -162,6 +162,12 @@ void copy15BytesFromDataSectionToBSS() {
 //******************************************************************
 // 5.) Copy 4 bytes from the text section to the BSS - Start
 //******************************************************************
+
+// this function exists primarily as a means to point at executable code (text)
+void dummyFunction() {
+	return;
+}
+
 void copy4BytesFromTextSectionToBSS() {
 
 	// we are going to try to capture the location in memory of a local function
@@ -170,8 +176,9 @@ void copy4BytesFromTextSectionToBSS() {
 
 	//const char *ptrToText = (const char *)0x0400;
 
-	// text: 0x0400
-	// BSS: variableInBSS
+	//void* ptrToText = dummyFunction;	// capture address at which this function exists
+	const char * ptrToText = (const char *)dummyFunction;	// capture address at which this function exists
+
 	printf("\n\n5.) Copy 4 bytes from the text section to the BSS\n\n");
 	printf("\tBefore 'memcpy(variableInBSS, ptrToText, 4);'\n");
 	printf("\t\t\tptrToText\t\t=\t %s\n", ptrToText);
