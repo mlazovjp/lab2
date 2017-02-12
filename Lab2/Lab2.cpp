@@ -57,7 +57,8 @@ void copy12BytesFromBSSToStack() {
 	//***************************************
 	// Create stuff on stack - Start
 	//***************************************
-	char variableOnStack[] = "Put me on stack";		// local function variable, is placed on stack
+	char variableOnStack[16];		// local function variable, not initialized, is placed on stack
+	strcpy_s(variableOnStack, "Put me on stack");
 	//***************************************
 	// Create stuff on stack - End
 	//***************************************
